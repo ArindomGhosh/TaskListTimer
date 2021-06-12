@@ -3,11 +3,11 @@ package com.arindom.timerlist.models
 import androidx.lifecycle.MutableLiveData
 import kotlinx.coroutines.Job
 
-enum class TaskStatus {
-    INITIAL,
+enum class TaskStatus() {
     STARTED,
-    PAUSED,
     RESUMED,
+    PAUSED,
+    INITIAL,
     COMPLETED
 }
 
@@ -27,10 +27,12 @@ data class Task(
         this.startTimeInMilliSeconds = System.currentTimeMillis()
     }
 
-    fun pauseTask() {
+    fun pauseTask(pauseTime :Long) {
         this.taskStatus = TaskStatus.PAUSED
-        this.pauseTimeInMilliseconds.add(System.currentTimeMillis())
-        this.coroutineJob?.cancel().also { this.coroutineJob = null }
+        this.pauseTimeInMilliseconds.add(pauseTime)
+        this.coroutineJob?.cancel()?.also {
+            this.coroutineJob = null
+        }
     }
 
     fun resumeTask() {

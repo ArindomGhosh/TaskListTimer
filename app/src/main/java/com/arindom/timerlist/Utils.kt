@@ -9,9 +9,9 @@ fun startTimer(startTimerInMilliSecond: Long, endTimeInMillisecond: Long): Flow<
     var nextTimeInMillisecond = startTimerInMilliSecond
     return flow {
         while (nextTimeInMillisecond <= endTimeInMillisecond) {
-            delay(1000)
             nextTimeInMillisecond += 1000
             emit(nextTimeInMillisecond)
+            delay(1000)
         }
     }
 }

@@ -18,28 +18,40 @@ class TaskListScreenViewModel : ViewModel() {
 
     private val listOfTask = listOf<Task>(
         Task(
-            jobId = "011", taskName = "Unloading",
-            taskStatus = TaskStatus.INITIAL, targetTimeInMilliSeconds = 20 * 60 * 1000
+            jobId = "011",
+            taskName = "Unloading",
+            taskStatus = TaskStatus.INITIAL,
+            targetTimeInMilliSeconds = 20 * 60 * 1000
         ),
         Task(
-            jobId = "011", taskName = "Racking",
-            taskStatus = TaskStatus.INITIAL, targetTimeInMilliSeconds = 20 * 60 * 1000
+            jobId = "012",
+            taskName = "Racking",
+            taskStatus = TaskStatus.INITIAL,
+            targetTimeInMilliSeconds = 20 * 60 * 1000
         ),
         Task(
-            jobId = "011", taskName = "BackStore",
-            taskStatus = TaskStatus.INITIAL, targetTimeInMilliSeconds = 20 * 60 * 1000
+            jobId = "013",
+            taskName = "BackStore",
+            taskStatus = TaskStatus.INITIAL,
+            targetTimeInMilliSeconds = 20 * 60 * 1000
         ),
         Task(
-            jobId = "011", taskName = "Cleaning aisle",
-            taskStatus = TaskStatus.INITIAL, targetTimeInMilliSeconds = 20 * 60 * 1000
+            jobId = "014",
+            taskName = "Cleaning aisle",
+            taskStatus = TaskStatus.INITIAL,
+            targetTimeInMilliSeconds = 20 * 60 * 1000
         ),
         Task(
-            jobId = "011", taskName = "Remove Overstocking",
-            taskStatus = TaskStatus.INITIAL, targetTimeInMilliSeconds = 20 * 60 * 1000
+            jobId = "015",
+            taskName = "Remove Overstocking",
+            taskStatus = TaskStatus.INITIAL,
+            targetTimeInMilliSeconds = 20 * 60 * 1000
         ),
         Task(
-            jobId = "011", taskName = "Cleaning Bay",
-            taskStatus = TaskStatus.INITIAL, targetTimeInMilliSeconds = 20 * 60 * 1000
+            jobId = "016",
+            taskName = "Cleaning Bay",
+            taskStatus = TaskStatus.INITIAL,
+            targetTimeInMilliSeconds = 20 * 60 * 1000
         ),
     )
 
@@ -72,7 +84,8 @@ class TaskListScreenViewModel : ViewModel() {
 
     fun pauseTask(mTask: Task) {
         if (mTask.taskStatus == TaskStatus.STARTED || mTask.taskStatus == TaskStatus.RESUMED)
-            mTask.pauseTask()
+            mTask.pauseTask(mTask.mCounterInMillisecondLiveData.value ?: 0L)
+        println("pause: $mTask")
     }
 
     fun resumeTask(mTask: Task) {
@@ -88,10 +101,11 @@ class TaskListScreenViewModel : ViewModel() {
     }
 
     private fun startTaskForTask(mTask: Task) {
+        println("start: $mTask")
         mTask.coroutineJob = viewModelScope.launch(mSupervisorJob) {
             startTimer(
                 startTimerInMilliSecond = if (mTask.taskStatus == TaskStatus.STARTED) 0L
-                else mTask.pauseTimeInMilliseconds[mTask.pauseTimeInMilliseconds.lastIndex] - mTask.startTimeInMilliSeconds,
+                else mTask.pauseTimeInMilliseconds[mTask.pauseTimeInMilliseconds.lastIndex],
                 endTimeInMillisecond = mTask.targetTimeInMilliSeconds
             ).collect {
                 mTask.mCounterInMillisecondLiveData.postValue(it)

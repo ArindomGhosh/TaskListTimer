@@ -13,7 +13,11 @@ class TaskListAdapter(
 ) :
     RecyclerView.Adapter<TaskListAdapter.TaskListViewHolder>() {
     private var taskList: List<Task> = emptyList()
+    private var taskListAdapterEventListener: TaskListAdapterEventListener? = null
 
+    fun setTaskListAdapterEventListener(taskListAdapterEventListener: TaskListAdapterEventListener) {
+        this.taskListAdapterEventListener = taskListAdapterEventListener
+    }
 
     inner class TaskListViewHolder(private val itemViewBinding: ItemTaskBinding) :
         RecyclerView.ViewHolder(itemViewBinding.root) {
@@ -21,18 +25,22 @@ class TaskListAdapter(
             itemViewBinding.tvTaskName.text = mTask.taskName
             itemViewBinding.timerWidget.ibStart.setOnClickListener {
                 mTaskListScreenViewModel.startTask(mTask)
+                taskListAdapterEventListener?.reorderTaskList(taskList)
             }
             itemViewBinding.timerWidget.ibPause.setOnClickListener {
                 mTaskListScreenViewModel.pauseTask(mTask)
+                taskListAdapterEventListener?.reorderTaskList(taskList)
             }
             itemViewBinding.timerWidget.ibStop.setOnClickListener {
                 mTaskListScreenViewModel.stopTask(mTask)
+                taskListAdapterEventListener?.reorderTaskList(taskList)
             }
             itemViewBinding.timerWidget.ibResume.setOnClickListener {
                 mTaskListScreenViewModel.resumeTask(mTask)
+                taskListAdapterEventListener?.reorderTaskList(taskList)
             }
 
-            mTask.mCounterInMillisecondLiveData.observe(context){
+            mTask.mCounterInMillisecondLiveData.observe(context) {
                 itemViewBinding.timerWidget.tvCounter.text = "$it s"
             }
         }
@@ -59,5 +67,9 @@ class TaskListAdapter(
 
     override fun getItemCount(): Int {
         return taskList.size
+    }
+
+    interface TaskListAdapterEventListener {
+        fun reorderTaskList(taskList: List<Task>)
     }
 }

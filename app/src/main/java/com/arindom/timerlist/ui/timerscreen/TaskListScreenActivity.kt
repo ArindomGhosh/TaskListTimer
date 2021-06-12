@@ -5,8 +5,9 @@ import android.os.Bundle
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.arindom.timerlist.databinding.ActivityTaskListBinding
+import com.arindom.timerlist.models.Task
 
-class TaskListScreenActivity : AppCompatActivity() {
+class TaskListScreenActivity : AppCompatActivity(), TaskListAdapter.TaskListAdapterEventListener {
     private lateinit var mActivityTaskListBinding: ActivityTaskListBinding
     private lateinit var mTaskListAdapter: TaskListAdapter
     private val mTaskListScreenViewModel: TaskListScreenViewModel by lazy { ViewModelProvider(this)[TaskListScreenViewModel::class.java] }
@@ -14,13 +15,9 @@ class TaskListScreenActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         mActivityTaskListBinding = ActivityTaskListBinding.inflate(layoutInflater)
         setContentView(mActivityTaskListBinding.root)
-
-        mTaskListAdapter = TaskListAdapter(this@TaskListScreenActivity, mTaskListScreenViewModel)
-        val layoutManager = LinearLayoutManager(this)
-        mActivityTaskListBinding.rvTask.layoutManager = layoutManager
-        mActivityTaskListBinding.rvTask.adapter = mTaskListAdapter
+        setUpAdapter()
         mTaskListScreenViewModel.getTaskListLiveData().observe(this) {
-            mTaskListAdapter.updateTaskList(it)
+            mTaskListAdapter.updateTaskList(it.sortedBy { task -> task.taskStatus })
         }
         mTaskListScreenViewModel.fetchTaskList()
         /*val subjectTask = mTaskListScreenViewModel.getTaskAt(1)
@@ -41,5 +38,18 @@ class TaskListScreenActivity : AppCompatActivity() {
         mActivityTaskListBinding.timerWidget.ibResume.setOnClickListener {
             mTaskListScreenViewModel.resumeTask(subjectTask)
         }*/
+    }
+
+    private fun setUpAdapter() {
+        mTaskListAdapter = TaskListAdapter(this@TaskListScreenActivity, mTaskListScreenViewModel)
+        val layoutManager = LinearLayoutManager(this)
+        mActivityTaskListBinding.rvTask.layoutManager = layoutManager
+        mActivityTaskListBinding.rvTask.adapter = mTaskListAdapter
+        mTaskListAdapter.setTaskListAdapterEventListener(this)
+    }
+
+    override fun reorderTaskList(taskList: List<Task>) {
+        setUpAdapter()
+        mTaskListAdapter.updateTaskList(taskList.sortedBy { it.taskStatus.ordinal })
     }
 }
