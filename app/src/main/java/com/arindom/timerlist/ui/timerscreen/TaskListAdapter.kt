@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.arindom.timerlist.databinding.ItemTaskBinding
 import com.arindom.timerlist.models.Task
+import com.arindom.timerlist.models.TaskStatus
 
 class TaskListAdapter(
     private val context: AppCompatActivity,
@@ -29,17 +30,19 @@ class TaskListAdapter(
             }
             itemViewBinding.timerWidget.ibPause.setOnClickListener {
                 mTaskListScreenViewModel.pauseTask(mTask)
-                taskListAdapterEventListener?.reorderTaskList(taskList)
+                if (mTask.taskStatus == TaskStatus.PAUSED)
+                    taskListAdapterEventListener?.reorderTaskList(taskList)
             }
             itemViewBinding.timerWidget.ibStop.setOnClickListener {
                 mTaskListScreenViewModel.stopTask(mTask)
-                taskListAdapterEventListener?.reorderTaskList(taskList)
+                if (mTask.taskStatus == TaskStatus.COMPLETED)
+                    taskListAdapterEventListener?.reorderTaskList(taskList)
             }
             itemViewBinding.timerWidget.ibResume.setOnClickListener {
                 mTaskListScreenViewModel.resumeTask(mTask)
-                taskListAdapterEventListener?.reorderTaskList(taskList)
+                if (mTask.taskStatus == TaskStatus.RESUMED)
+                    taskListAdapterEventListener?.reorderTaskList(taskList)
             }
-
             mTask.mCounterInMillisecondLiveData.observe(context) {
                 itemViewBinding.timerWidget.tvCounter.text = "$it s"
             }
@@ -59,6 +62,10 @@ class TaskListAdapter(
                 false
             )
         )
+    }
+
+    override fun getItemViewType(position: Int): Int {
+        return position
     }
 
     override fun onBindViewHolder(holder: TaskListViewHolder, position: Int) {

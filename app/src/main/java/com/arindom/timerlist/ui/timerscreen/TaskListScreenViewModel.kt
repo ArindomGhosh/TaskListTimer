@@ -19,37 +19,145 @@ class TaskListScreenViewModel : ViewModel() {
     private val listOfTask = listOf<Task>(
         Task(
             jobId = "011",
-            taskName = "Unloading",
+            taskName = "Unloading1",
             taskStatus = TaskStatus.INITIAL,
             targetTimeInMilliSeconds = 20 * 60 * 1000
         ),
         Task(
             jobId = "012",
-            taskName = "Racking",
+            taskName = "Racking1",
             taskStatus = TaskStatus.INITIAL,
             targetTimeInMilliSeconds = 20 * 60 * 1000
         ),
         Task(
             jobId = "013",
-            taskName = "BackStore",
+            taskName = "BackStore1",
             taskStatus = TaskStatus.INITIAL,
             targetTimeInMilliSeconds = 20 * 60 * 1000
         ),
         Task(
             jobId = "014",
-            taskName = "Cleaning aisle",
+            taskName = "Cleaning aisle1",
             taskStatus = TaskStatus.INITIAL,
             targetTimeInMilliSeconds = 20 * 60 * 1000
         ),
         Task(
             jobId = "015",
-            taskName = "Remove Overstocking",
+            taskName = "Remove Overstocking1",
             taskStatus = TaskStatus.INITIAL,
             targetTimeInMilliSeconds = 20 * 60 * 1000
         ),
         Task(
             jobId = "016",
-            taskName = "Cleaning Bay",
+            taskName = "Cleaning Bay1",
+            taskStatus = TaskStatus.INITIAL,
+            targetTimeInMilliSeconds = 20 * 60 * 1000
+        ),
+        Task(
+            jobId = "017",
+            taskName = "Unloading1",
+            taskStatus = TaskStatus.INITIAL,
+            targetTimeInMilliSeconds = 20 * 60 * 1000
+        ),
+        Task(
+            jobId = "018",
+            taskName = "Racking1",
+            taskStatus = TaskStatus.INITIAL,
+            targetTimeInMilliSeconds = 20 * 60 * 1000
+        ),
+        Task(
+            jobId = "019",
+            taskName = "BackStore1",
+            taskStatus = TaskStatus.INITIAL,
+            targetTimeInMilliSeconds = 20 * 60 * 1000
+        ),
+        Task(
+            jobId = "020",
+            taskName = "Cleaning aisle1",
+            taskStatus = TaskStatus.INITIAL,
+            targetTimeInMilliSeconds = 20 * 60 * 1000
+        ),
+        Task(
+            jobId = "021",
+            taskName = "Remove Overstocking2",
+            taskStatus = TaskStatus.INITIAL,
+            targetTimeInMilliSeconds = 20 * 60 * 1000
+        ),
+        Task(
+            jobId = "022",
+            taskName = "Cleaning Bay2",
+            taskStatus = TaskStatus.INITIAL,
+            targetTimeInMilliSeconds = 20 * 60 * 1000
+        ),
+        Task(
+            jobId = "023",
+            taskName = "Unloading2",
+            taskStatus = TaskStatus.INITIAL,
+            targetTimeInMilliSeconds = 20 * 60 * 1000
+        ),
+        Task(
+            jobId = "024",
+            taskName = "Racking2",
+            taskStatus = TaskStatus.INITIAL,
+            targetTimeInMilliSeconds = 20 * 60 * 1000
+        ),
+        Task(
+            jobId = "025",
+            taskName = "BackStore2",
+            taskStatus = TaskStatus.INITIAL,
+            targetTimeInMilliSeconds = 20 * 60 * 1000
+        ),
+        Task(
+            jobId = "026",
+            taskName = "Cleaning aisle2",
+            taskStatus = TaskStatus.INITIAL,
+            targetTimeInMilliSeconds = 20 * 60 * 1000
+        ),
+        Task(
+            jobId = "027",
+            taskName = "Remove Overstocking2",
+            taskStatus = TaskStatus.INITIAL,
+            targetTimeInMilliSeconds = 20 * 60 * 1000
+        ),
+        Task(
+            jobId = "028",
+            taskName = "Cleaning Bay2",
+            taskStatus = TaskStatus.INITIAL,
+            targetTimeInMilliSeconds = 20 * 60 * 1000
+        ),
+        Task(
+            jobId = "029",
+            taskName = "Unloading2",
+            taskStatus = TaskStatus.INITIAL,
+            targetTimeInMilliSeconds = 20 * 60 * 1000
+        ),
+        Task(
+            jobId = "030",
+            taskName = "Racking2",
+            taskStatus = TaskStatus.INITIAL,
+            targetTimeInMilliSeconds = 20 * 60 * 1000
+        ),
+        Task(
+            jobId = "031",
+            taskName = "BackStore3",
+            taskStatus = TaskStatus.INITIAL,
+            targetTimeInMilliSeconds = 20 * 60 * 1000
+        ),
+        Task(
+            jobId = "032",
+            taskName = "Cleaning aisle3",
+            taskStatus = TaskStatus.INITIAL,
+            targetTimeInMilliSeconds = 20 * 60 * 1000
+        ),
+        Task(
+            jobId = "033",
+            taskName = "Remove Overstocking3",
+            taskStatus = TaskStatus.INITIAL,
+            targetTimeInMilliSeconds = 20 * 60 * 1000
+        ),
+        Task(
+            jobId = "034",
+            taskName = "Cleaning Bay3",
             taskStatus = TaskStatus.INITIAL,
             targetTimeInMilliSeconds = 20 * 60 * 1000
         ),
@@ -78,7 +186,7 @@ class TaskListScreenViewModel : ViewModel() {
     }
 
     fun stopTask(mTask: Task) {
-        if (mTask.taskStatus != TaskStatus.COMPLETED)
+        if (mTask.taskStatus == TaskStatus.STARTED || mTask.taskStatus == TaskStatus.RESUMED)
             mTask.finishTask()
     }
 
